@@ -1,0 +1,322 @@
+[
+  {
+    "scheme_name": "PM Kisan Samman Nidhi",
+    "category": "Central",
+    "description": "Income support scheme for eligible farmer families.",
+    "benefits": "₹6000 per year",
+    "eligibility": "Eligible farmer families",
+    "official_link": "https://pmkisan.gov.in"
+  },
+  {
+    "scheme_name": "Pradhan Mantri Fasal Bima Yojana",
+    "category": "Central",
+    "description": "Crop insurance scheme.",
+    "benefits": "Insurance against crop loss",
+    "eligibility": "All farmers",
+    "official_link": "https://pmfby.gov.in"
+  },
+  {
+    "scheme_name": "Pradhan Mantri Krishi Sinchai Yojana",
+    "category": "Central",
+    "description": "Improves irrigation facilities.",
+    "benefits": "Financial assistance for irrigation",
+    "eligibility": "Farmers",
+    "official_link": "https://pmksy.gov.in"
+  },
+  {
+    "scheme_name": "Soil Health Card Scheme",
+    "category": "Central",
+    "description": "Provides soil nutrient information.",
+    "benefits": "Free soil testing",
+    "eligibility": "All farmers",
+    "official_link": "https://soilhealth.dac.gov.in"
+  },
+  {
+    "scheme_name": "Kisan Credit Card",
+    "category": "Central",
+    "description": "Provides agricultural credit.",
+    "benefits": "Low-interest crop loans",
+    "eligibility": "Eligible farmers",
+    "official_link": "https://pmkisan.gov.in"
+  },
+  {
+    "scheme_name": "e-NAM",
+    "category": "Central",
+    "description": "National Agriculture Market.",
+    "benefits": "Online crop trading",
+    "eligibility": "Farmers and traders",
+    "official_link": "https://enam.gov.in"
+  },
+  {
+    "scheme_name": "Agriculture Infrastructure Fund",
+    "category": "Central",
+    "description": "Supports post-harvest infrastructure.",
+    "benefits": "Interest subsidy",
+    "eligibility": "Farmers and FPOs",
+    "official_link": "https://agriinfra.dac.gov.in"
+  },
+  {
+    "scheme_name": "Rashtriya Krishi Vikas Yojana",
+    "category": "Central",
+    "description": "Supports agriculture development.",
+    "benefits": "Project funding",
+    "eligibility": "Farmers",
+    "official_link": "https://rkvy.nic.in"
+  },
+  {
+    "scheme_name": "National Food Security Mission",
+    "category": "Central",
+    "description": "Increase food grain production.",
+    "benefits": "Input assistance",
+    "eligibility": "Farmers",
+    "official_link": "https://nfsm.gov.in"
+  },
+  {
+    "scheme_name": "Mission for Integrated Development of Horticulture",
+    "category": "Central",
+    "description": "Supports horticulture crops.",
+    "benefits": "Financial assistance",
+    "eligibility": "Horticulture farmers",
+    "official_link": "https://midh.gov.in"
+  },
+  {
+    "scheme_name": "Paramparagat Krishi Vikas Yojana",
+    "category": "Central",
+    "description": "Promotes organic farming.",
+    "benefits": "Organic farming support",
+    "eligibility": "Farmers",
+    "official_link": "https://pgsindia-ncof.gov.in"
+  },
+  {
+    "scheme_name": "National Mission on Sustainable Agriculture",
+    "category": "Central",
+    "description": "Climate-resilient agriculture.",
+    "benefits": "Financial support",
+    "eligibility": "Farmers",
+    "official_link": "https://nmsa.dac.gov.in"
+  },
+  {
+    "scheme_name": "PM Kusum Yojana",
+    "category": "Central",
+    "description": "Solar pumps for farmers.",
+    "benefits": "Solar pump subsidy",
+    "eligibility": "Farmers",
+    "official_link": "https://pmkusum.mnre.gov.in"
+  },
+  {
+    "scheme_name": "Sub Mission on Agricultural Mechanization",
+    "category": "Central",
+    "description": "Promotes farm mechanization.",
+    "benefits": "Machinery subsidy",
+    "eligibility": "Farmers",
+    "official_link": "https://agrimachinery.nic.in"
+  },
+  {
+    "scheme_name": "National Bamboo Mission",
+    "category": "Central",
+    "description": "Promotes bamboo cultivation.",
+    "benefits": "Financial assistance",
+    "eligibility": "Farmers",
+    "official_link": "https://nbm.nic.in"
+  },
+  {
+    "scheme_name": "National Mission on Edible Oils - Oil Palm",
+    "category": "Central",
+    "description": "Increase edible oil production.",
+    "benefits": "Financial assistance",
+    "eligibility": "Oilseed farmers",
+    "official_link": "https://agricoop.nic.in"
+  },
+  {
+    "scheme_name": "Per Drop More Crop",
+    "category": "Central",
+    "description": "Promotes micro irrigation.",
+    "benefits": "Drip irrigation subsidy",
+    "eligibility": "Farmers",
+    "official_link": "https://pmksy.gov.in"
+  },
+  {
+    "scheme_name": "Digital Agriculture Mission",
+    "category": "Central",
+    "description": "Digital services for farmers.",
+    "benefits": "Digital agriculture support",
+    "eligibility": "Farmers",
+    "official_link": "https://agriwelfare.gov.in"
+  },
+  {
+    "scheme_name": "AgriStack",
+    "category": "Central",
+    "description": "Digital agriculture ecosystem.",
+    "benefits": "Unified farmer services",
+    "eligibility": "Farmers",
+    "official_link": "https://agriwelfare.gov.in"
+  },
+  {
+    "scheme_name": "Seed Village Programme",
+    "category": "Central",
+    "description": "Quality seed production.",
+    "benefits": "Seed production assistance",
+    "eligibility": "Farmers",
+    "official_link": "https://seednet.gov.in"
+  },
+    {
+    "scheme_name": "Rainfed Area Development",
+    "category": "Central",
+    "description": "Improves productivity in rainfed farming areas.",
+    "benefits": "Financial assistance",
+    "eligibility": "Farmers",
+    "official_link": "https://nmsa.dac.gov.in"
+  },
+  {
+    "scheme_name": "Integrated Pest Management",
+    "category": "Central",
+    "description": "Promotes eco-friendly pest control.",
+    "benefits": "Technical guidance",
+    "eligibility": "Farmers",
+    "official_link": "https://ppqs.gov.in"
+  },
+  {
+    "scheme_name": "Integrated Nutrient Management",
+    "category": "Central",
+    "description": "Promotes balanced use of fertilizers.",
+    "benefits": "Training and support",
+    "eligibility": "Farmers",
+    "official_link": "https://agricoop.nic.in"
+  },
+  {
+    "scheme_name": "Krishi Vigyan Kendra Programme",
+    "category": "Central",
+    "description": "Provides training and demonstrations to farmers.",
+    "benefits": "Free training",
+    "eligibility": "Farmers",
+    "official_link": "https://icar.org.in"
+  },
+  {
+    "scheme_name": "National Pest Surveillance System",
+    "category": "Central",
+    "description": "Provides pest monitoring and advisory.",
+    "benefits": "Early pest alerts",
+    "eligibility": "Farmers",
+    "official_link": "https://ppqs.gov.in"
+  },
+  {
+    "scheme_name": "Ikhedut Portal",
+    "category": "Gujarat",
+    "description": "Online portal for agriculture assistance schemes.",
+    "benefits": "Apply online for subsidies",
+    "eligibility": "Farmers of Gujarat",
+    "official_link": "https://ikhedut.gujarat.gov.in"
+  },
+  {
+    "scheme_name": "Gujarat Micro Irrigation Scheme",
+    "category": "Gujarat",
+    "description": "Financial assistance for micro irrigation.",
+    "benefits": "Subsidy",
+    "eligibility": "Gujarat farmers",
+    "official_link": "https://ikhedut.gujarat.gov.in"
+  },
+  {
+    "scheme_name": "Gujarat Drip Irrigation Assistance",
+    "category": "Gujarat",
+    "description": "Subsidy for drip irrigation systems.",
+    "benefits": "Financial assistance",
+    "eligibility": "Gujarat farmers",
+    "official_link": "https://ikhedut.gujarat.gov.in"
+  },
+  {
+    "scheme_name": "Gujarat Sprinkler Irrigation Assistance",
+    "category": "Gujarat",
+    "description": "Support for sprinkler irrigation.",
+    "benefits": "Subsidy",
+    "eligibility": "Gujarat farmers",
+    "official_link": "https://ikhedut.gujarat.gov.in"
+  },
+  {
+    "scheme_name": "Gujarat Tractor Assistance Scheme",
+    "category": "Gujarat",
+    "description": "Subsidy for purchasing tractors.",
+    "benefits": "Financial assistance",
+    "eligibility": "Eligible Gujarat farmers",
+    "official_link": "https://ikhedut.gujarat.gov.in"
+  },
+  {
+    "scheme_name": "Gujarat Farm Mechanization Assistance",
+    "category": "Gujarat",
+    "description": "Support for purchasing farm machinery.",
+    "benefits": "Machinery subsidy",
+    "eligibility": "Farmers",
+    "official_link": "https://ikhedut.gujarat.gov.in"
+  },
+  {
+    "scheme_name": "Gujarat Horticulture Assistance Scheme",
+    "category": "Gujarat",
+    "description": "Promotes horticulture development.",
+    "benefits": "Financial assistance",
+    "eligibility": "Horticulture farmers",
+    "official_link": "https://ikhedut.gujarat.gov.in"
+  },
+  {
+    "scheme_name": "Gujarat Seed Assistance Scheme",
+    "category": "Gujarat",
+    "description": "Provides quality seeds at subsidized rates.",
+    "benefits": "Seed subsidy",
+    "eligibility": "Farmers",
+    "official_link": "https://ikhedut.gujarat.gov.in"
+  },
+  {
+    "scheme_name": "Gujarat Fertilizer Assistance Scheme",
+    "category": "Gujarat",
+    "description": "Financial assistance for fertilizers.",
+    "benefits": "Subsidy",
+    "eligibility": "Farmers",
+    "official_link": "https://ikhedut.gujarat.gov.in"
+  },
+  {
+    "scheme_name": "Gujarat Farm Pond Scheme",
+    "category": "Gujarat",
+    "description": "Support for construction of farm ponds.",
+    "benefits": "Financial assistance",
+    "eligibility": "Farmers",
+    "official_link": "https://ikhedut.gujarat.gov.in"
+  },
+  {
+    "scheme_name": "Gujarat Greenhouse Assistance Scheme",
+    "category": "Gujarat",
+    "description": "Subsidy for greenhouse construction.",
+    "benefits": "Financial assistance",
+    "eligibility": "Farmers",
+    "official_link": "https://ikhedut.gujarat.gov.in"
+  },
+  {
+    "scheme_name": "Gujarat Shade Net House Assistance",
+    "category": "Gujarat",
+    "description": "Support for shade net houses.",
+    "benefits": "Subsidy",
+    "eligibility": "Farmers",
+    "official_link": "https://ikhedut.gujarat.gov.in"
+  },
+  {
+    "scheme_name": "Gujarat Solar Pump Assistance",
+    "category": "Gujarat",
+    "description": "Support for installation of solar pumps.",
+    "benefits": "Financial assistance",
+    "eligibility": "Farmers",
+    "official_link": "https://ikhedut.gujarat.gov.in"
+  },
+  {
+    "scheme_name": "Gujarat Farm Equipment Subsidy",
+    "category": "Gujarat",
+    "description": "Subsidy for agricultural equipment.",
+    "benefits": "Equipment subsidy",
+    "eligibility": "Farmers",
+    "official_link": "https://ikhedut.gujarat.gov.in"
+  },
+  {
+    "scheme_name": "Gujarat Organic Farming Assistance",
+    "category": "Gujarat",
+    "description": "Promotes organic farming practices.",
+    "benefits": "Financial assistance",
+    "eligibility": "Farmers",
+    "official_link": "https://ikhedut.gujarat.gov.in"
+  }
+]

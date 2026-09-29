@@ -1,0 +1,306 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Farmer Registration | Farmer Support & Agriculture Portal{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-9">
+            <div class="card card-agri shadow-lg border-0 overflow-hidden">
+                <div class="card-header bg-success text-white py-3 px-4">
+                    <div class="d-flex align-items-center">
+                        <img src="{% static 'images/logo.png' %}"
+                             alt="Logo"
+                             width="42"
+                             height="42"
+                             class="rounded-circle me-3 bg-white p-1">
+                        <div>
+                            <h3 class="mb-0 fw-bold fs-4">🌾 Farmer Registration</h3>
+                            <small class="text-warning">Join the digital agriculture network for personalized support</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger mb-4">
+                        {% for error in form.non_field_errors %}
+                            <div><i class="fa-solid fa-circle-exclamation me-2"></i>{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <form method="POST" novalidate id="farmerRegistrationForm">
+                        {% csrf_token %}
+
+                        <!-- Section 1: Personal & Account Information -->
+                        <h5 class="fw-bold text-success border-bottom pb-2 mb-3">
+                            <i class="fa-solid fa-user-check me-2"></i> 1. Personal & Contact Details
+                        </h5>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Farmer Full Name <span class="text-danger">*</span></label>
+                                {{ form.name }}
+                                {% if form.name.errors %}
+                                    <div class="text-danger small mt-1">{{ form.name.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">10-Digit Mobile Number <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">+91</span>
+                                    {{ form.mobile }}
+                                </div>
+                                {% if form.mobile.errors %}
+                                    <div class="text-danger small mt-1">{{ form.mobile.errors.0 }}</div>
+                                {% endif %}
+                                <small class="text-muted" style="font-size: 0.8rem;">Used for login and SMS farming reminders</small>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Email Address <span class="text-danger">*</span></label>
+                                {{ form.email }}
+                                {% if form.email.errors %}
+                                    <div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Password <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    {{ form.password }}
+                                    <button class="btn btn-outline-secondary" type="button" id="togglePasswordBtn">
+                                        <i class="fa-solid fa-eye" id="togglePasswordIcon"></i>
+                                    </button>
+                                </div>
+                                {% if form.password.errors %}
+                                    <div class="text-danger small mt-1">{{ form.password.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Section 2: Farm Location (Dynamic Cascading Selection) -->
+                        <h5 class="fw-bold text-success border-bottom pb-2 mb-3">
+                            <i class="fa-solid fa-location-dot me-2"></i> 2. Farm Location (Pan-India Database)
+                        </h5>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">State / UT <span class="text-danger">*</span></label>
+                                {{ form.state }}
+                                {% if form.state.errors %}
+                                    <div class="text-danger small mt-1">{{ form.state.errors.0 }}</div>
+                                {% endif %}
+                                <small class="text-muted" style="font-size: 0.8rem;">All 36 States & UTs loaded</small>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">District <span class="text-danger">*</span></label>
+                                {{ form.district }}
+                                {% if form.district.errors %}
+                                    <div class="text-danger small mt-1">{{ form.district.errors.0 }}</div>
+                                {% endif %}
+                                <small class="text-muted" id="districtHelp" style="font-size: 0.8rem;">Select state first</small>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Taluka / Subdistrict <span class="text-danger">*</span></label>
+                                {{ form.taluka }}
+                                {% if form.taluka.errors %}
+                                    <div class="text-danger small mt-1">{{ form.taluka.errors.0 }}</div>
+                                {% endif %}
+                                <small class="text-muted" id="talukaHelp" style="font-size: 0.8rem;">Select district first</small>
+                            </div>
+                        </div>
+
+                        <!-- Section 3: Agricultural Profile -->
+                        <h5 class="fw-bold text-success border-bottom pb-2 mb-3">
+                            <i class="fa-solid fa-tractor me-2"></i> 3. Crop & Farm Profile
+                        </h5>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Primary Crop <span class="text-danger">*</span></label>
+                                {{ form.crop }}
+                                {% if form.crop.errors %}
+                                    <div class="text-danger small mt-1">{{ form.crop.errors.0 }}</div>
+                                {% endif %}
+                                <small class="text-muted" style="font-size: 0.8rem;">e.g., Wheat, Cotton, Rice, Groundnut, Maize</small>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Cultivated Land Area (Acres) <span class="text-danger">*</span></label>
+                                {{ form.land_area }}
+                                {% if form.land_area.errors %}
+                                    <div class="text-danger small mt-1">{{ form.land_area.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Soil Type <span class="text-danger">*</span></label>
+                                {{ form.soil_type }}
+                                {% if form.soil_type.errors %}
+                                    <div class="text-danger small mt-1">{{ form.soil_type.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Preferred Language</label>
+                                {{ form.language }}
+                                {% if form.language.errors %}
+                                    <div class="text-danger small mt-1">{{ form.language.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="pt-3 border-top">
+                            <button type="submit" class="btn btn-agri btn-lg w-100 py-3 shadow">
+                                <i class="fa-solid fa-seedling me-2"></i> Complete Farmer Registration
+                            </button>
+                        </div>
+
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <span class="text-muted">Already registered?</span>
+                        <a href="{% url 'login' %}" class="fw-bold text-success ms-1">
+                            Login to your account <i class="fa-solid fa-arrow-right-to-bracket ms-1"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Password toggle
+    const toggleBtn = document.getElementById("togglePasswordBtn");
+    const passwordInput = document.getElementById("id_password");
+    const toggleIcon = document.getElementById("togglePasswordIcon");
+
+    if (toggleBtn && passwordInput) {
+        toggleBtn.addEventListener("click", function() {
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                toggleIcon.classList.remove("fa-eye");
+                toggleIcon.classList.add("fa-eye-slash");
+            } else {
+                passwordInput.type = "password";
+                toggleIcon.classList.remove("fa-eye-slash");
+                toggleIcon.classList.add("fa-eye");
+            }
+        });
+    }
+
+    // Dynamic Dependent Dropdowns
+    const stateSelect = document.getElementById("state");
+    const districtSelect = document.getElementById("district");
+    const talukaSelect = document.getElementById("taluka");
+
+    const districtHelp = document.getElementById("districtHelp");
+    const talukaHelp = document.getElementById("talukaHelp");
+
+    // Remember initial selected values (if form was re-rendered on validation error)
+    const initialDistrictValue = "{{ form.district.value|default:'' }}";
+    const initialTalukaValue = "{{ form.taluka.value|default:'' }}";
+
+    function loadDistricts(stateId, selectedDistrictId) {
+        if (!stateId) {
+            districtSelect.innerHTML = '<option value="">Select District</option>';
+            talukaSelect.innerHTML = '<option value="">Select Taluka</option>';
+            if (districtHelp) districtHelp.innerText = "Select state first";
+            return;
+        }
+
+        districtSelect.innerHTML = '<option value="">Loading districts...</option>';
+        talukaSelect.innerHTML = '<option value="">Select Taluka</option>';
+        if (districtHelp) districtHelp.innerText = "Fetching districts from database...";
+
+        fetch(`{% url 'ajax_load_districts' %}?state=${stateId}`)
+            .then(res => res.json())
+            .then(data => {
+                districtSelect.innerHTML = '<option value="">Select District</option>';
+                data.forEach(item => {
+                    const opt = document.createElement("option");
+                    opt.value = item.id;
+                    opt.textContent = item.name;
+                    if (selectedDistrictId && String(selectedDistrictId) === String(item.id)) {
+                        opt.selected = true;
+                    }
+                    districtSelect.appendChild(opt);
+                });
+
+                if (districtHelp) districtHelp.innerText = `${data.length} districts loaded`;
+
+                // If district was pre-selected, load its talukas immediately
+                if (selectedDistrictId) {
+                    loadTalukas(selectedDistrictId, initialTalukaValue);
+                }
+            })
+            .catch(err => {
+                console.error("Failed to load districts:", err);
+                districtSelect.innerHTML = '<option value="">Error loading districts</option>';
+            });
+    }
+
+    function loadTalukas(districtId, selectedTalukaId) {
+        if (!districtId) {
+            talukaSelect.innerHTML = '<option value="">Select Taluka</option>';
+            if (talukaHelp) talukaHelp.innerText = "Select district first";
+            return;
+        }
+
+        talukaSelect.innerHTML = '<option value="">Loading talukas...</option>';
+        if (talukaHelp) talukaHelp.innerText = "Fetching talukas from database...";
+
+        fetch(`{% url 'ajax_load_talukas' %}?district=${districtId}`)
+            .then(res => res.json())
+            .then(data => {
+                talukaSelect.innerHTML = '<option value="">Select Taluka</option>';
+                data.forEach(item => {
+                    const opt = document.createElement("option");
+                    opt.value = item.id;
+                    opt.textContent = item.name;
+                    if (selectedTalukaId && String(selectedTalukaId) === String(item.id)) {
+                        opt.selected = true;
+                    }
+                    talukaSelect.appendChild(opt);
+                });
+
+                if (talukaHelp) talukaHelp.innerText = `${data.length} talukas loaded`;
+            })
+            .catch(err => {
+                console.error("Failed to load talukas:", err);
+                talukaSelect.innerHTML = '<option value="">Error loading talukas</option>';
+            });
+    }
+
+    if (stateSelect) {
+        stateSelect.addEventListener("change", function() {
+            loadDistricts(this.value, null);
+        });
+
+        // If page loaded with a selected state, pre-load districts and talukas
+        if (stateSelect.value) {
+            loadDistricts(stateSelect.value, initialDistrictValue);
+        }
+    }
+
+    if (districtSelect) {
+        districtSelect.addEventListener("change", function() {
+            loadTalukas(this.value, null);
+        });
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Crop Advisory | Farmer Support & Agriculture Portal{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+    <!-- Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h2 fw-bold text-success mb-1">
+                🌱 Scientific Crop Cultivation Advisory
+            </h1>
+            <p class="text-dark mb-0">
+                Educational agronomic guidelines for Indian crops covering sowing seasons, soil prep, critical irrigations, and post-harvest care.
+            </p>
+        </div>
+        <div class="mt-2 mt-sm-0">
+            {% if user.is_authenticated %}
+            <a href="{% url 'dashboard' %}" class="btn btn-outline-success">
+                <i class="fa-solid fa-arrow-left me-1"></i> Dashboard
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Crop Selector Bar -->
+    <div class="card card-agri p-3 mb-4 bg-white border-0 shadow-sm">
+        <form method="GET" class="row g-2 align-items-center">
+            <div class="col-md-9">
+                <div class="input-group">
+                    <span class="input-group-text bg-light text-muted border-end-0">
+                        <i class="fa-solid fa-seedling text-success"></i>
+                    </span>
+                    <select name="crop" class="form-select border-start-0 py-2" onchange="this.form.submit()">
+                        {% for crop_name in available_crops %}
+                        <option value="{{ crop_name }}" {% if selected_crop|lower == crop_name|lower %}selected{% endif %}>
+                            {{ crop_name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-agri w-100 py-2">
+                    <i class="fa-solid fa-book-open me-1"></i> View Advisory
+                </button>
+            </div>
+        </form>
+
+        <!-- Quick Crop Selector Badges -->
+        <div class="d-flex flex-wrap align-items-center gap-2 mt-3 pt-2 border-top">
+            <small class="text-muted fw-semibold me-1">Select Crop:</small>
+            {% for crop_name in available_crops %}
+            <a href="?crop={{ crop_name }}"
+               class="badge {% if selected_crop|lower == crop_name|lower %}bg-success text-white{% else %}bg-light text-dark border{% endif %} text-decoration-none py-2 px-3 rounded-pill">
+                {{ crop_name }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% if advisory %}
+    <!-- ================= CROP HERO CARD ================= -->
+    <div class="card card-agri border-0 shadow mb-4 text-white overflow-hidden" style="background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);">
+        <div class="card-body p-4 p-md-5">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-8">
+                    <span class="badge bg-warning text-dark px-3 py-1 rounded-pill mb-2">
+                        <i class="fa-solid fa-tag me-1"></i> {{ advisory.category }}
+                    </span>
+                    <h2 class="display-5 fw-bold text-white mb-2">{{ advisory.name }}</h2>
+                    <p class="lead text-white-50 mb-3">
+                        <i class="fa-solid fa-calendar-check text-warning me-1"></i> Suitable Season: <strong>{{ advisory.season }}</strong>
+                    </p>
+                    <div class="d-flex flex-wrap gap-2 text-white">
+                        <span class="badge bg-white text-dark px-3 py-2 rounded-pill shadow-sm">
+                            <i class="fa-solid fa-temperature-half me-1"></i> {{ advisory.climate }}
+                        </span>
+                        <span class="badge bg-white text-dark px-3 py-2 rounded-pill shadow-sm">
+                            <i class="fa-solid fa-weight-scale me-1"></i> Seed Rate: {{ advisory.seed_rate }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 text-lg-end text-center">
+                    <div class="p-3 bg-white bg-opacity-10 rounded-4 border border-white border-opacity-25 text-start">
+                        <h6 class="text-warning fw-bold mb-2">
+                            <i class="fa-solid fa-mountain me-1"></i> Recommended Soil
+                        </h6>
+                        <p class="text-white small mb-0">{{ advisory.soil }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= ADVISORY DETAILS SECTIONS ================= -->
+    <div class="row g-4">
+        <!-- 1. Cultivation & Land Preparation -->
+        <div class="col-lg-6">
+            <div class="card card-agri h-100 shadow-sm border-top border-4 border-success">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-success text-white p-2 rounded-circle me-3 d-inline-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
+                            <i class="fa-solid fa-tractor fs-5"></i>
+                        </div>
+                        <h4 class="fw-bold text-success mb-0">Cultivation & Field Preparation</h4>
+                    </div>
+                    <p class="text-dark" style="line-height: 1.7;">
+                        {{ advisory.cultivation }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Irrigation Guidance -->
+        <div class="col-lg-6">
+            <div class="card card-agri h-100 shadow-sm border-top border-4 border-primary">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-primary text-white p-2 rounded-circle me-3 d-inline-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
+                            <i class="fa-solid fa-droplet fs-5"></i>
+                        </div>
+                        <h4 class="fw-bold text-primary mb-0">Critical Irrigation Stages</h4>
+                    </div>
+                    <p class="text-dark" style="line-height: 1.7;">
+                        {{ advisory.irrigation }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Fertilizer Guidance -->
+        <div class="col-lg-6">
+            <div class="card card-agri h-100 shadow-sm border-top border-4 border-warning">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-warning text-dark p-2 rounded-circle me-3 d-inline-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
+                            <i class="fa-solid fa-flask fs-5"></i>
+                        </div>
+                        <h4 class="fw-bold text-success mb-0">Balanced Nutrient & Fertilizer Care</h4>
+                    </div>
+                    <p class="text-dark" style="line-height: 1.7;">
+                        {{ advisory.fertilizer }}
+                    </p>
+                    <a href="{% url 'fertilizer' %}?crop={{ selected_crop }}" class="btn btn-outline-success btn-sm mt-2">
+                        Calculate Soil-Specific Doses <i class="fa-solid fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Harvesting & Post-Harvest Storage -->
+        <div class="col-lg-6">
+            <div class="card card-agri h-100 shadow-sm border-top border-4 border-info">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-info text-white p-2 rounded-circle me-3 d-inline-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
+                            <i class="fa-solid fa-wheat-awn fs-5"></i>
+                        </div>
+                        <h4 class="fw-bold text-info mb-0">Harvesting & Storage Management</h4>
+                    </div>
+                    <p class="text-dark" style="line-height: 1.7;">
+                        {{ advisory.harvesting }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Educational Disclaimer -->
+    <div class="alert alert-light border shadow-sm mt-4 p-3 d-flex align-items-center gap-3">
+        <i class="fa-solid fa-shield-halved text-success fs-3"></i>
+        <div class="small text-dark">
+            <strong>Educational & Safe Practice Policy:</strong> All advisories are compiled from general agricultural university packages of practices. Always adhere to local Krishi Vigyan Kendra (KVK) soil test reports. We promote integrated pest management and bio-fertilizer safety.
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

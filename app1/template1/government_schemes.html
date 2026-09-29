@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Government Schemes | Farmer Support & Agriculture Portal{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/government_schemes.css' %}">
+<style>
+.scheme-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border-radius: 16px;
+    border: 1px solid #e0e7e0;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    background: #ffffff;
+}
+.scheme-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 28px rgba(46, 125, 50, 0.15);
+}
+.scheme-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #1b5e20;
+    min-height: 54px;
+    line-height: 1.35;
+}
+.scheme-badge-central {
+    background-color: #1b5e20;
+    color: #ffffff;
+}
+.scheme-badge-gujarat {
+    background-color: #f57f17;
+    color: #ffffff;
+}
+.scheme-section-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    color: #495057;
+    margin-bottom: 2px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+    <!-- Header & Breadcrumb -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h2 fw-bold text-success mb-1">
+                🌾 Agricultural Government Schemes
+            </h1>
+            <p class="text-muted mb-0">
+                Explore financial assistance, crop insurance, subsidies, and credit schemes from Central and Gujarat Governments.
+            </p>
+        </div>
+        <div class="mt-2 mt-sm-0">
+            {% if user.is_authenticated %}
+            <a href="{% url 'dashboard' %}" class="btn btn-outline-success">
+                <i class="fa-solid fa-arrow-left me-1"></i> Dashboard
+            </a>
+            {% else %}
+            <a href="{% url 'home' %}" class="btn btn-outline-success">
+                <i class="fa-solid fa-arrow-left me-1"></i> Home
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Search & Filter Controls -->
+    <div class="card card-agri p-3 mb-4 bg-white border-0 shadow-sm">
+        <form method="GET" class="row g-3 align-items-center">
+            <div class="col-md-5">
+                <div class="input-group">
+                    <span class="input-group-text bg-light text-muted border-end-0">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                    <input type="text"
+                           name="search"
+                           class="form-control border-start-0"
+                           placeholder="Search scheme name, benefits, keywords..."
+                           value="{{ search }}">
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <select name="category" class="form-select">
+                    <option value="">All Categories (Central & Gujarat)</option>
+                    <option value="Central" {% if category == "Central" %}selected{% endif %}>
+                        Central Government Schemes
+                    </option>
+                    <option value="Gujarat" {% if category == "Gujarat" %}selected{% endif %}>
+                        Gujarat Government Schemes
+                    </option>
+                </select>
+            </div>
+
+            <div class="col-md-3 d-flex gap-2">
+                <button type="submit" class="btn btn-agri w-100">
+                    <i class="fa-solid fa-filter me-1"></i> Filter Schemes
+                </button>
+                {% if search or category %}
+                <a href="{% url 'government_schemes' %}" class="btn btn-outline-secondary" title="Reset Filters">
+                    <i class="fa-solid fa-rotate-left"></i>
+                </a>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+
+    <!-- Status Bar -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex align-items-center gap-2">
+            <span class="text-muted fw-semibold">Showing Schemes:</span>
+            <span class="badge bg-success fs-6 px-3 py-1 rounded-pill">
+                {{ schemes|length }} Available
+            </span>
+            {% if category %}
+                <span class="badge bg-warning text-dark px-2 py-1 rounded-pill">
+                    Category: {{ category }}
+                </span>
+            {% endif %}
+            {% if search %}
+                <span class="badge bg-light text-dark border px-2 py-1 rounded-pill">
+                    "{{ search }}"
+                </span>
+            {% endif %}
+        </div>
+        <small class="text-muted">Responsive 4-column layout</small>
+    </div>
+
+    <!-- ================= 4-COLUMN RESPONSIVE DESKTOP GRID ================= -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+        {% for scheme in schemes %}
+        <div class="col">
+            <div class="scheme-card shadow-sm h-100">
+                <div class="card-body p-3 d-flex flex-column">
+
+                    <!-- Category Badge -->
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="badge rounded-pill {% if scheme.category == 'Central' %}scheme-badge-central{% else %}scheme-badge-gujarat{% endif %} px-2 py-1">
+                            <i class="fa-solid {% if scheme.category == 'Central' %}fa-flag{% else %}fa-landmark{% endif %} me-1"></i> {{ scheme.category }}
+                        </span>
+                        <small class="text-muted fw-semibold" style="font-size: 0.75rem;">#{{ scheme.id }}</small>
+                    </div>
+
+                    <!-- Scheme Name -->
+                    <h5 class="scheme-name mb-2">
+                        {{ scheme.scheme_name }}
+                    </h5>
+
+                    <!-- Description -->
+                    <p class="text-muted small mb-3 flex-grow-1" style="line-height: 1.5;">
+                        {{ scheme.description|default:"Agricultural assistance and welfare scheme for eligible farming families." }}
+                    </p>
+
+                    <hr class="my-2 text-muted opacity-25">
+
+                    <!-- Benefits Section -->
+                    <div class="mb-2">
+                        <div class="scheme-section-label text-success">
+                            <i class="fa-solid fa-gift me-1"></i> Key Benefits
+                        </div>
+                        <p class="small text-dark fw-semibold mb-0" style="line-height: 1.4;">
+                            {{ scheme.benefits|default:"Financial and technical assistance as per government guidelines." }}
+                        </p>
+                    </div>
+
+                    <!-- Eligibility Section -->
+                    <div class="mb-3">
+                        <div class="scheme-section-label text-primary">
+                            <i class="fa-solid fa-user-check me-1"></i> Eligibility
+                        </div>
+                        <p class="small text-muted mb-0" style="line-height: 1.4;">
+                            {{ scheme.eligibility|default:"Farmers meeting land ownership and category criteria." }}
+                        </p>
+                    </div>
+
+                    <!-- Official Website Button -->
+                    <div class="mt-auto pt-2">
+                        <a href="{{ scheme.official_link|default:'#' }}"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="btn btn-agri btn-sm w-100 py-2">
+                            Official Website <i class="fa-solid fa-arrow-up-right-from-square ms-1 small"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 w-100">
+            <div class="alert alert-warning text-center py-5 shadow-sm rounded-4">
+                <i class="fa-solid fa-building-columns fs-1 text-warning mb-3 d-block"></i>
+                <h4 class="fw-bold">No Government Schemes Found</h4>
+                <p class="text-muted mb-3">No schemes matched your search query or selected category filter.</p>
+                <a href="{% url 'government_schemes' %}" class="btn btn-success px-4">
+                    View All 40 Schemes
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Farmer Support & Agriculture Portal | Home{% endblock %}
+
+{% block content %}
+<!-- ================= HERO SECTION ================= -->
+<section class="py-5" style="background: linear-gradient(180deg, #e8f5e9 0%, #f6f9f6 100%);">
+    <div class="container">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-7">
+                <span class="badge bg-success px-3 py-2 fs-6 rounded-pill mb-3">
+                    <i class="fa-solid fa-wheat-awn me-1"></i> Dedicated Farmer Assistance Platform
+                </span>
+                <h1 class="display-4 fw-bold text-success mb-3">
+                    Smart Farming, <br>
+                    <span class="text-dark">Prosperous Agriculture</span>
+                </h1>
+                <p class="lead text-muted mb-4">
+                    Access real-time weather forecasts, explore all 40 Central and Gujarat agricultural schemes, receive safe crop cultivation guidance, calculate balanced fertilizer doses, and learn sustainable composting techniques.
+                </p>
+
+                <div class="d-flex flex-wrap gap-3 mb-4">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'dashboard' %}" class="btn btn-agri btn-lg px-4 shadow">
+                            <i class="fa-solid fa-gauge-high me-2"></i> Go to Farmer Dashboard
+                        </a>
+                        <a href="{% url 'weather' %}" class="btn btn-agri-outline btn-lg px-4">
+                            <i class="fa-solid fa-cloud-sun me-2"></i> Check Local Weather
+                        </a>
+                    {% else %}
+                        <a href="{% url 'register' %}" class="btn btn-agri btn-lg px-4 shadow">
+                            <i class="fa-solid fa-user-plus me-2"></i> Register as Farmer
+                        </a>
+                        <a href="{% url 'government_schemes' %}" class="btn btn-agri-outline btn-lg px-4">
+                            <i class="fa-solid fa-building-columns me-2"></i> Explore 40 Schemes
+                        </a>
+                    {% endif %}
+                </div>
+
+                <!-- Live Quick Stats -->
+                <div class="row g-3 pt-3 border-top">
+                    <div class="col-6 col-sm-3">
+                        <div class="p-2 rounded-3 bg-white shadow-sm border text-center">
+                            <h3 class="fw-bold text-success mb-0">{{ schemes_count }}</h3>
+                            <small class="text-muted fw-semibold">Govt Schemes</small>
+                        </div>
+                    </div>
+                    <div class="col-6 col-sm-3">
+                        <div class="p-2 rounded-3 bg-white shadow-sm border text-center">
+                            <h3 class="fw-bold text-success mb-0">{{ states_count }}</h3>
+                            <small class="text-muted fw-semibold">States & UTs</small>
+                        </div>
+                    </div>
+                    <div class="col-6 col-sm-3">
+                        <div class="p-2 rounded-3 bg-white shadow-sm border text-center">
+                            <h3 class="fw-bold text-success mb-0">{{ districts_count }}</h3>
+                            <small class="text-muted fw-semibold">Districts</small>
+                        </div>
+                    </div>
+                    <div class="col-6 col-sm-3">
+                        <div class="p-2 rounded-3 bg-white shadow-sm border text-center">
+                            <h3 class="fw-bold text-success mb-0">{{ talukas_count }}</h3>
+                            <small class="text-muted fw-semibold">Talukas</small>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-lg-5 text-center">
+                <div class="position-relative d-inline-block p-3">
+                    <div class="card-agri p-4 shadow-lg text-center bg-white">
+                        <img src="{% static 'images/logo.png' %}"
+                             alt="Agriculture Portal"
+                             class="img-fluid mb-3 rounded-circle shadow-sm"
+                             style="max-height: 280px; width: 280px; object-fit: contain;">
+                        <h4 class="fw-bold text-success mb-1">Farmer Support & Agriculture Portal</h4>
+                        <p class="text-muted small mb-0">Empowering Every Kisan Across India</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= CORE SERVICES SECTION ================= -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title text-center">Comprehensive Farming Services</h2>
+            <p class="text-muted">Explore the essential modules designed to guide you through every stage of cultivation</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- 1. Government Schemes -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card card-agri h-100 p-3">
+                    <div class="card-body">
+                        <div class="d-inline-flex p-3 rounded-circle bg-success bg-opacity-10 text-success mb-3">
+                            <i class="fa-solid fa-building-columns fs-2"></i>
+                        </div>
+                        <h4 class="card-title fw-bold text-success">Government Schemes</h4>
+                        <p class="card-text text-muted">
+                            Complete catalog of 40 verified Central and Gujarat Government agricultural assistance schemes with eligibility criteria, benefits, and direct links.
+                        </p>
+                        <a href="{% url 'government_schemes' %}" class="btn btn-agri-outline btn-sm">
+                            Browse 40 Schemes <i class="fa-solid fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Weather Forecast -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card card-agri h-100 p-3">
+                    <div class="card-body">
+                        <div class="d-inline-flex p-3 rounded-circle bg-primary bg-opacity-10 text-primary mb-3">
+                            <i class="fa-solid fa-cloud-sun-rain fs-2"></i>
+                        </div>
+                        <h4 class="card-title fw-bold text-success">Live Weather Forecast</h4>
+                        <p class="card-text text-muted">
+                            Accurate live temperature, humidity, wind velocity, and 5-day weather predictions for your taluka and city to optimize irrigation and spraying.
+                        </p>
+                        <a href="{% url 'weather' %}" class="btn btn-agri-outline btn-sm">
+                            View Forecast <i class="fa-solid fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Crop Advisory -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card card-agri h-100 p-3">
+                    <div class="card-body">
+                        <div class="d-inline-flex p-3 rounded-circle bg-warning bg-opacity-10 text-warning mb-3">
+                            <i class="fa-solid fa-seedling fs-2 text-success"></i>
+                        </div>
+                        <h4 class="card-title fw-bold text-success">Crop Advisory</h4>
+                        <p class="card-text text-muted">
+                            Educational cultivation guidelines covering suitable seasons, soil preparation, critical irrigation timings, and harvesting for all major crops.
+                        </p>
+                        <a href="{% url 'crop_advisory' %}" class="btn btn-agri-outline btn-sm">
+                            Get Crop Advisory <i class="fa-solid fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Fertilizer Recommendation -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card card-agri h-100 p-3">
+                    <div class="card-body">
+                        <div class="d-inline-flex p-3 rounded-circle bg-info bg-opacity-10 text-info mb-3">
+                            <i class="fa-solid fa-flask fs-2 text-success"></i>
+                        </div>
+                        <h4 class="card-title fw-bold text-success">Fertilizer Calculator</h4>
+                        <p class="card-text text-muted">
+                            Tailored nutrient recommendations based on your crop and specific soil type (Black, Red, Alluvial, Clay, Sandy, Loamy) with safe split dosages.
+                        </p>
+                        <a href="{% url 'fertilizer' %}" class="btn btn-agri-outline btn-sm">
+                            Calculate Nutrients <i class="fa-solid fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. Organic Compost -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card card-agri h-100 p-3">
+                    <div class="card-body">
+                        <div class="d-inline-flex p-3 rounded-circle bg-success bg-opacity-10 text-success mb-3">
+                            <i class="fa-solid fa-recycle fs-2"></i>
+                        </div>
+                        <h4 class="card-title fw-bold text-success">Organic Compost Guide</h4>
+                        <p class="card-text text-muted">
+                            Learn pit, heap, and vermicomposting techniques using farm bio-waste. Optimize your carbon-to-nitrogen ratio and improve soil moisture retention.
+                        </p>
+                        <a href="{% url 'compost' %}" class="btn btn-agri-outline btn-sm">
+                            Read Compost Guide <i class="fa-solid fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Market Price (Mandi) -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card card-agri h-100 p-3">
+                    <div class="card-body">
+                        <div class="d-inline-flex p-3 rounded-circle bg-secondary bg-opacity-10 text-secondary mb-3">
+                            <i class="fa-solid fa-chart-line fs-2 text-success"></i>
+                        </div>
+                        <h4 class="card-title fw-bold text-success">Market Price Module</h4>
+                        <p class="card-text text-muted">
+                            Structured Mandi price lookup module prepared for official government Agmarknet / e-NAM API integration without displaying fabricated prices.
+                        </p>
+                        <a href="{% url 'market_price' %}" class="btn btn-agri-outline btn-sm">
+                            View Mandi Module <i class="fa-solid fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ================= LOCATION COVERAGE BANNER ================= -->
+<section class="py-5 bg-white border-top border-bottom">
+    <div class="container">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-6">
+                <h3 class="fw-bold text-success mb-3">All India Location Coverage</h3>
+                <p class="text-muted mb-4">
+                    Our portal is built with an extensive database spanning all <strong>36 States and Union Territories</strong>, <strong>785 Districts</strong>, and <strong>7,151 Talukas / Subdistricts</strong>. Farmers from any region in India can register and obtain local farming assistance.
+                </p>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="fa-solid fa-circle-check text-success me-2"></i> Dynamic cascading selection: State → District → Taluka</li>
+                    <li class="mb-2"><i class="fa-solid fa-circle-check text-success me-2"></i> No hardcoded restrictions — all real Census & LGD location codes</li>
+                    <li class="mb-2"><i class="fa-solid fa-circle-check text-success me-2"></i> Accurate local weather and scheme mapping</li>
+                </ul>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="card-agri p-4 bg-light">
+                    <div class="row g-3">
+                        <div class="col-4">
+                            <div class="bg-white p-3 rounded-3 shadow-sm">
+                                <i class="fa-solid fa-map-location-dot text-success fs-3 mb-2"></i>
+                                <h4 class="fw-bold mb-0">36</h4>
+                                <small class="text-muted">States/UTs</small>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="bg-white p-3 rounded-3 shadow-sm">
+                                <i class="fa-solid fa-city text-primary fs-3 mb-2"></i>
+                                <h4 class="fw-bold mb-0">785</h4>
+                                <small class="text-muted">Districts</small>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="bg-white p-3 rounded-3 shadow-sm">
+                                <i class="fa-solid fa-tree text-success fs-3 mb-2"></i>
+                                <h4 class="fw-bold mb-0">7,151</h4>
+                                <small class="text-muted">Talukas</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

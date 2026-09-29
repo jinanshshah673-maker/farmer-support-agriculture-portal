@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Farming Activity Notifications | Farmer Support & Agriculture Portal{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+    <!-- Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h2 fw-bold text-success mb-1">
+                🔔 Farming Activity Reminders & Alerts
+            </h1>
+            <p class="text-muted mb-0">
+                Timely agronomic reminders for sowing, irrigation, fertilizer scheduling, and crop management.
+            </p>
+        </div>
+        <div class="d-flex gap-2 mt-2 mt-sm-0">
+            <button class="btn btn-agri" data-bs-toggle="modal" data-bs-target="#addReminderModal">
+                <i class="fa-solid fa-plus me-1"></i> Add Custom Reminder
+            </button>
+            <a href="{% url 'mark_all_notifications_read' %}" class="btn btn-outline-secondary">
+                <i class="fa-solid fa-check-double me-1"></i> Mark All Read
+            </a>
+            <a href="{% url 'dashboard' %}" class="btn btn-outline-success">
+                <i class="fa-solid fa-arrow-left me-1"></i> Dashboard
+            </a>
+        </div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="card card-agri p-3 mb-4 bg-white border-0 shadow-sm">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+            <!-- Status Filter -->
+            <div class="btn-group" role="group">
+                <a href="?{% if filter_type %}type={{ filter_type }}{% endif %}"
+                   class="btn btn-sm {% if not filter_status %}btn-success{% else %}btn-outline-secondary{% endif %}">
+                    All Reminders
+                </a>
+                <a href="?status=unread{% if filter_type %}&type={{ filter_type }}{% endif %}"
+                   class="btn btn-sm {% if filter_status == 'unread' %}btn-success{% else %}btn-outline-secondary{% endif %}">
+                    Unread ({{ unread_count }})
+                </a>
+                <a href="?status=read{% if filter_type %}&type={{ filter_type }}{% endif %}"
+                   class="btn btn-sm {% if filter_status == 'read' %}btn-success{% else %}btn-outline-secondary{% endif %}">
+                    Read
+                </a>
+            </div>
+
+            <!-- Activity Type Badges -->
+            <div class="d-flex flex-wrap gap-1 align-items-center">
+                <small class="text-muted fw-semibold me-1">Activity:</small>
+                <a href="?{% if filter_status %}status={{ filter_status }}{% endif %}"
+                   class="badge {% if not filter_type %}bg-success{% else %}bg-light text-dark border{% endif %} text-decoration-none py-1 px-2">
+                    All
+                </a>
+                <a href="?type=sowing{% if filter_status %}&status={{ filter_status }}{% endif %}"
+                   class="badge {% if filter_type == 'sowing' %}bg-success{% else %}bg-light text-dark border{% endif %} text-decoration-none py-1 px-2">
+                    🌱 Sowing
+                </a>
+                <a href="?type=irrigation{% if filter_status %}&status={{ filter_status }}{% endif %}"
+                   class="badge {% if filter_type == 'irrigation' %}bg-success{% else %}bg-light text-dark border{% endif %} text-decoration-none py-1 px-2">
+                    💧 Irrigation
+                </a>
+                <a href="?type=fertilizer{% if filter_status %}&status={{ filter_status }}{% endif %}"
+                   class="badge {% if filter_type == 'fertilizer' %}bg-success{% else %}bg-light text-dark border{% endif %} text-decoration-none py-1 px-2">
+                    🧪 Fertilizer
+                </a>
+                <a href="?type=crop_care{% if filter_status %}&status={{ filter_status }}{% endif %}"
+                   class="badge {% if filter_type == 'crop_care' %}bg-success{% else %}bg-light text-dark border{% endif %} text-decoration-none py-1 px-2">
+                    🛡️ Crop Care
+                </a>
+                <a href="?type=harvesting{% if filter_status %}&status={{ filter_status }}{% endif %}"
+                   class="badge {% if filter_type == 'harvesting' %}bg-success{% else %}bg-light text-dark border{% endif %} text-decoration-none py-1 px-2">
+                    🌾 Harvesting
+                </a>
+                <a href="?type=weather_alert{% if filter_status %}&status={{ filter_status }}{% endif %}"
+                   class="badge {% if filter_type == 'weather_alert' %}bg-success{% else %}bg-light text-dark border{% endif %} text-decoration-none py-1 px-2">
+                    🌦️ Weather Alert
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= NOTIFICATIONS STREAM ================= -->
+    <div class="row g-3">
+        {% for notif in notifications %}
+        <div class="col-12">
+            <div class="card card-agri shadow-sm border-0 {% if not notif.is_read %}border-start border-4 border-success bg-white{% else %}bg-light opacity-75{% endif %} p-3">
+                <div class="card-body p-2 d-flex flex-column flex-md-row justify-content-between align-items-start gap-3">
+                    <div class="d-flex gap-3">
+                        <div class="mt-1">
+                            {% if notif.notification_type == 'sowing' %}
+                                <div class="bg-success text-white p-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                    <i class="fa-solid fa-seedling fs-5"></i>
+                                </div>
+                            {% elif notif.notification_type == 'irrigation' %}
+                                <div class="bg-primary text-white p-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                    <i class="fa-solid fa-droplet fs-5"></i>
+                                </div>
+                            {% elif notif.notification_type == 'fertilizer' %}
+                                <div class="bg-warning text-dark p-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                    <i class="fa-solid fa-flask fs-5"></i>
+                                </div>
+                            {% elif notif.notification_type == 'harvesting' %}
+                                <div class="bg-warning text-white p-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                    <i class="fa-solid fa-wheat-awn fs-5"></i>
+                                </div>
+                            {% elif notif.notification_type == 'weather_alert' %}
+                                <div class="bg-danger text-white p-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                    <i class="fa-solid fa-cloud-bolt fs-5"></i>
+                                </div>
+                            {% else %}
+                                <div class="bg-info text-white p-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                    <i class="fa-solid fa-shield-halved fs-5"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
+                                <span class="badge bg-light text-dark border px-2 py-1 small text-uppercase">
+                                    {{ notif.get_notification_type_display }}
+                                </span>
+                                <h5 class="fw-bold mb-0 text-dark">{{ notif.title }}</h5>
+                                {% if not notif.is_read %}
+                                    <span class="badge bg-success small">New</span>
+                                {% endif %}
+                            </div>
+
+                            <p class="text-muted mb-2" style="line-height: 1.6;">
+                                {{ notif.message }}
+                            </p>
+
+                            <small class="text-muted">
+                                <i class="fa-regular fa-clock me-1"></i> Scheduled: {{ notif.created_at|date:"d M Y, h:i A" }}
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="mt-2 mt-md-0 text-nowrap">
+                        {% if not notif.is_read %}
+                        <a href="{% url 'mark_notification_read' notif.id %}" class="btn btn-sm btn-outline-success">
+                            <i class="fa-solid fa-check me-1"></i> Mark as Read
+                        </a>
+                        {% else %}
+                        <span class="badge bg-secondary text-white py-2 px-3 rounded-pill">
+                            <i class="fa-solid fa-check me-1"></i> Completed
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="card card-agri p-5 text-center bg-white shadow-sm border-0">
+                <i class="fa-solid fa-bell-slash text-muted fs-1 mb-3 d-block"></i>
+                <h4 class="fw-bold text-dark">No Notifications in this Category</h4>
+                <p class="text-muted mb-4">You can add your own farming activity reminders using the button below.</p>
+                <div>
+                    <button class="btn btn-agri px-4" data-bs-toggle="modal" data-bs-target="#addReminderModal">
+                        <i class="fa-solid fa-plus me-1"></i> Add Farming Reminder
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+<!-- ================= ADD REMINDER MODAL ================= -->
+<div class="modal fade" id="addReminderModal" tabindex="-1" aria-labelledby="addReminderModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+            <div class="modal-header bg-success text-white py-3">
+                <h5 class="modal-title fw-bold" id="addReminderModalLabel">
+                    <i class="fa-solid fa-calendar-plus me-2"></i> Schedule Farming Reminder
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Reminder Title <span class="text-danger">*</span></label>
+                        {{ reminder_form.title }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Activity Category <span class="text-danger">*</span></label>
+                        {{ reminder_form.notification_type }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Details & Instructions <span class="text-danger">*</span></label>
+                        {{ reminder_form.message }}
+                    </div>
+                </div>
+                <div class="modal-footer bg-light border-0 py-3">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" name="add_reminder" class="btn btn-agri">
+                        <i class="fa-solid fa-floppy-disk me-1"></i> Save Reminder
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
