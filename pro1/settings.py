@@ -18,10 +18,20 @@ ALLOWED_HOSTS = [
 
 CSRF_TRUSTED_ORIGINS = [
     "https://farmer-support-agriculture-portal.vercel.app",
-    "https://*.vercel.app",
 ]
 
-DATA_GOV_API_KEY = os.environ.get("DATA_GOV_API_KEY", "")
+SECURE_PROXY_SSL_HEADER = (
+    "HTTP_X_FORWARDED_PROTO",
+    "https",
+)
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+DATA_GOV_API_KEY = os.environ.get(
+    "DATA_GOV_API_KEY",
+    ""
+)
 
 DATA_GOV_MANDI_RESOURCE_ID = os.environ.get(
     "DATA_GOV_MANDI_RESOURCE_ID",
