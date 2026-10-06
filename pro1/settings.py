@@ -3,17 +3,10 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DATA_GOV_API_KEY = os.environ.get(
-    "DATA_GOV_API_KEY",
-    "579b464db66ec23bdd000001cdc3b564546246a772a26393094f5645"
+SECRET_KEY = os.environ.get(
+    "DJANGO_SECRET_KEY",
+    "django-insecure-farmer-support-project"
 )
-
-DATA_GOV_MANDI_RESOURCE_ID = os.environ.get(
-    "DATA_GOV_MANDI_RESOURCE_ID",
-    "9ef84268-d588-465a-a308-a864a43d0070"
-)
-
-SECRET_KEY = "django-insecure-farmer-support-project"
 
 DEBUG = True
 
@@ -22,6 +15,13 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     ".vercel.app",
 ]
+
+DATA_GOV_API_KEY = os.environ.get("DATA_GOV_API_KEY", "")
+
+DATA_GOV_MANDI_RESOURCE_ID = os.environ.get(
+    "DATA_GOV_MANDI_RESOURCE_ID",
+    "9ef84268-d588-465a-a308-a864a43d0070"
+)
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -50,7 +50,9 @@ ROOT_URLCONF = "pro1.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "app1" / "template1"],
+        "DIRS": [
+            BASE_DIR / "app1" / "template1"
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -98,7 +100,7 @@ USE_TZ = True
 STATIC_URL = "/static/"
 
 STATICFILES_DIRS = [
-    BASE_DIR / "app1" / "static",
+    BASE_DIR / "app1" / "static"
 ]
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
