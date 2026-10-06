@@ -4,9 +4,9 @@
 {% block title %}Market Price (Mandi) | Farmer Support & Agriculture Portal{% endblock %}
 
 {% block content %}
+
 <div class="container py-4">
 
-    <!-- Header -->
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
         <div>
             <h1 class="h2 fw-bold text-success mb-1">
@@ -16,178 +16,310 @@
                 Live APMC Mandi rates and wholesale arrival prices across Gujarat.
             </p>
         </div>
+
+        {% if user.is_authenticated %}
         <div class="mt-2 mt-sm-0">
-            {% if user.is_authenticated %}
             <a href="{% url 'dashboard' %}" class="btn btn-outline-success">
-                <i class="fa-solid fa-arrow-left me-1"></i> Dashboard
+                <i class="fa-solid fa-arrow-left me-1"></i>
+                Dashboard
             </a>
-            {% endif %}
         </div>
+        {% endif %}
     </div>
 
-    <!-- Summary Statistics -->
+
     {% if summary.has_data %}
+
+    <!-- Summary Statistics -->
     <div class="row g-4 mb-4">
+
         <div class="col-md-3">
             <div class="card card-agri bg-white border-0 shadow-sm h-100 p-3 text-center">
-                <h6 class="text-muted fw-bold text-uppercase mb-2">Total Mandis</h6>
-                <h3 class="fw-bold text-success mb-0">{{ summary.markets_count }}</h3>
+                <h6 class="text-muted fw-bold text-uppercase mb-2">
+                    Total Mandis
+                </h6>
+                <h3 class="fw-bold text-success mb-0">
+                    {{ summary.markets_count }}
+                </h3>
                 <small class="text-muted">Active Markets</small>
             </div>
         </div>
+
         <div class="col-md-3">
             <div class="card card-agri bg-white border-0 shadow-sm h-100 p-3 text-center">
-                <h6 class="text-muted fw-bold text-uppercase mb-2">Commodities</h6>
-                <h3 class="fw-bold text-primary mb-0">{{ summary.commodities_count }}</h3>
+                <h6 class="text-muted fw-bold text-uppercase mb-2">
+                    Commodities
+                </h6>
+                <h3 class="fw-bold text-primary mb-0">
+                    {{ summary.commodities_count }}
+                </h3>
                 <small class="text-muted">Tracked Items</small>
             </div>
         </div>
+
         <div class="col-md-3">
             <div class="card card-agri bg-white border-0 shadow-sm h-100 p-3 text-center">
-                <h6 class="text-muted fw-bold text-uppercase mb-2">Latest Data</h6>
-                <h3 class="fw-bold text-dark mb-0">{{ summary.latest_arrival_date|date:"d M Y" }}</h3>
+                <h6 class="text-muted fw-bold text-uppercase mb-2">
+                    Latest Data
+                </h6>
+                <h3 class="fw-bold text-dark mb-0">
+                    {% if summary.latest_arrival_date %}
+                        {{ summary.latest_arrival_date|date:"d M Y" }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </h3>
                 <small class="text-muted">Last Arrival</small>
             </div>
         </div>
+
         <div class="col-md-3">
             <div class="card card-agri bg-white border-0 shadow-sm h-100 p-3 text-center">
-                <h6 class="text-muted fw-bold text-uppercase mb-2">Total Records</h6>
-                <h3 class="fw-bold text-warning mb-0">{{ summary.records_count }}</h3>
+                <h6 class="text-muted fw-bold text-uppercase mb-2">
+                    Total Records
+                </h6>
+                <h3 class="fw-bold text-warning mb-0">
+                    {{ summary.records_count }}
+                </h3>
                 <small class="text-muted">Daily Entries</small>
             </div>
         </div>
+
     </div>
 
-    <!-- Analytics Section (Chart & Best Prices) -->
+
+    <!-- Analytics -->
     <div class="row g-4 mb-4">
-        <!-- Best Prices for Target Commodity -->
+
+        <!-- Best Prices -->
         <div class="col-lg-4">
             <div class="card card-agri border-0 shadow-sm h-100">
+
                 <div class="card-header bg-white border-bottom pt-3 pb-2">
                     <h5 class="fw-bold text-dark mb-0">
-                        <i class="fa-solid fa-trophy text-warning me-2"></i> Best Prices: {{ target_commodity }}
+                        <i class="fa-solid fa-trophy text-warning me-2"></i>
+                        Best Prices: {{ target_commodity }}
                     </h5>
                 </div>
+
                 <div class="card-body">
+
                     {% if best_prices %}
+
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <span class="text-muted">Average Price</span>
-                        <span class="fw-bold text-dark fs-5">₹{{ best_prices.avg_price }} / Qtl</span>
+                        <span class="fw-bold text-dark fs-5">
+                            ₹{{ best_prices.avg_price }} / Qtl
+                        </span>
                     </div>
-                    
+
+                    {% if best_prices.highest %}
                     <div class="p-3 bg-success bg-opacity-10 rounded mb-3 border border-success">
                         <div class="d-flex justify-content-between mb-1">
-                            <span class="fw-bold text-success"><i class="fa-solid fa-arrow-up me-1"></i> Highest Rate</span>
-                            <span class="fw-bold text-success">₹{{ best_prices.highest.modal_price }}</span>
+                            <span class="fw-bold text-success">
+                                <i class="fa-solid fa-arrow-up me-1"></i>
+                                Highest Rate
+                            </span>
+                            <span class="fw-bold text-success">
+                                ₹{{ best_prices.highest.modal_price }}
+                            </span>
                         </div>
+
                         <div class="small text-muted d-flex justify-content-between">
                             <span>{{ best_prices.highest.market }}</span>
                             <span>{{ best_prices.highest.district }}</span>
                         </div>
                     </div>
+                    {% endif %}
 
+
+                    {% if best_prices.lowest %}
                     <div class="p-3 bg-danger bg-opacity-10 rounded border border-danger">
                         <div class="d-flex justify-content-between mb-1">
-                            <span class="fw-bold text-danger"><i class="fa-solid fa-arrow-down me-1"></i> Lowest Rate</span>
-                            <span class="fw-bold text-danger">₹{{ best_prices.lowest.modal_price }}</span>
+                            <span class="fw-bold text-danger">
+                                <i class="fa-solid fa-arrow-down me-1"></i>
+                                Lowest Rate
+                            </span>
+                            <span class="fw-bold text-danger">
+                                ₹{{ best_prices.lowest.modal_price }}
+                            </span>
                         </div>
+
                         <div class="small text-muted d-flex justify-content-between">
                             <span>{{ best_prices.lowest.market }}</span>
                             <span>{{ best_prices.lowest.district }}</span>
                         </div>
                     </div>
+                    {% endif %}
+
                     {% else %}
+
                     <div class="text-center py-4 text-muted">
                         <i class="fa-solid fa-circle-exclamation text-warning fs-3 mb-2"></i>
-                        <p class="mb-0">No comparative data found for {{ target_commodity }} on the latest date.</p>
+                        <p class="mb-0">
+                            No comparative data found for {{ target_commodity }}.
+                        </p>
                     </div>
+
                     {% endif %}
+
                 </div>
             </div>
         </div>
 
-        <!-- Chart Section -->
+
+        <!-- Chart -->
         <div class="col-lg-8">
             <div class="card card-agri border-0 shadow-sm h-100">
+
                 <div class="card-header bg-white border-bottom pt-3 pb-2">
                     <h5 class="fw-bold text-dark mb-0">
-                        <i class="fa-solid fa-chart-bar text-primary me-2"></i> Market Price Comparison: {{ target_commodity }}
+                        <i class="fa-solid fa-chart-bar text-primary me-2"></i>
+                        Market Price Comparison: {{ target_commodity }}
                     </h5>
                 </div>
+
                 <div class="card-body">
+
                     {% if chart_data %}
-                    <canvas id="mandiPriceChart" height="250"></canvas>
+                    <div style="height: 300px;">
+                        <canvas id="mandiPriceChart"></canvas>
+                    </div>
                     {% else %}
                     <div class="text-center py-5 text-muted">
                         <i class="fa-solid fa-chart-line fs-1 text-light mb-3"></i>
-                        <p>No chart data available for {{ target_commodity }}.</p>
+                        <p class="mb-0">
+                            No chart data available for {{ target_commodity }}.
+                        </p>
                     </div>
                     {% endif %}
+
                 </div>
             </div>
         </div>
+
     </div>
+
     {% else %}
+
     <div class="alert alert-warning shadow-sm border-0 mb-4">
-        <h5 class="fw-bold mb-2"><i class="fa-solid fa-triangle-exclamation me-2"></i> No Mandi Data Found</h5>
-        <p class="mb-0">The Mandi Price database is currently empty. Please ask the administrator to run the data sync command or wait for the scheduled update.</p>
+        <h5 class="fw-bold mb-2">
+            <i class="fa-solid fa-triangle-exclamation me-2"></i>
+            No Mandi Data Found
+        </h5>
+
+        <p class="mb-0">
+            The Mandi Price database is currently empty.
+            Please ask the administrator to run the data sync command
+            or wait for the scheduled update.
+        </p>
     </div>
+
     {% endif %}
+
 
     <!-- Filter Bar -->
     <div class="card card-agri p-4 mb-4 bg-white border-0 shadow-sm">
+
         <h5 class="fw-bold text-success mb-3">
-            <i class="fa-solid fa-filter me-2"></i> Mandi Rate Search & Filter
+            <i class="fa-solid fa-filter me-2"></i>
+            Mandi Rate Search & Filter
         </h5>
-        <form method="GET" class="row g-3">
+
+        <form method="get" class="row g-3">
+
             <div class="col-md-4">
-                <label class="form-label fw-semibold">Select State</label>
+                <label class="form-label fw-semibold">
+                    Select State
+                </label>
+
                 <select name="state" class="form-select">
-                    <option value="Gujarat" selected>Gujarat</option>
+                    <option value="Gujarat"
+                        {% if selected_state == "Gujarat" or not selected_state %}
+                        selected
+                        {% endif %}>
+                        Gujarat
+                    </option>
                 </select>
             </div>
 
+
             <div class="col-md-4">
-                <label class="form-label fw-semibold">Select Commodity</label>
+                <label class="form-label fw-semibold">
+                    Select Commodity
+                </label>
+
                 <select name="commodity" class="form-select">
-                    <option value="">All Commodities</option>
+
+                    <option value="">
+                        All Commodities
+                    </option>
+
                     {% for c in commodities %}
-                    <option value="{{ c }}" {% if selected_commodity == c %}selected{% endif %}>
+                    <option value="{{ c }}"
+                        {% if selected_commodity == c %}
+                        selected
+                        {% endif %}>
                         {{ c }}
                     </option>
                     {% endfor %}
+
                 </select>
             </div>
 
+
             <div class="col-md-4">
-                <label class="form-label fw-semibold">APMC / Mandi Name</label>
+                <label class="form-label fw-semibold">
+                    APMC / Mandi Name
+                </label>
+
                 <div class="input-group">
-                    <input type="text"
-                           name="market"
-                           class="form-control"
-                           placeholder="e.g., Gondal, Unjha, Rajkot"
-                           value="{{ selected_market }}">
+
+                    <input
+                        type="text"
+                        name="market"
+                        class="form-control"
+                        placeholder="e.g. Gondal, Unjha, Rajkot"
+                        value="{{ selected_market }}"
+                    >
+
                     <button class="btn btn-agri" type="submit">
-                        <i class="fa-solid fa-magnifying-glass"></i> Search
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        Search
                     </button>
+
                 </div>
             </div>
+
         </form>
     </div>
 
+
     <!-- Data Table -->
     <div class="card card-agri border-0 shadow-sm mb-4">
+
         <div class="card-header bg-white border-bottom pt-3 pb-2 d-flex justify-content-between align-items-center">
+
             <h5 class="fw-bold text-dark mb-0">
-                <i class="fa-solid fa-table-list text-success me-2"></i> Mandi Price Records
+                <i class="fa-solid fa-table-list text-success me-2"></i>
+                Mandi Price Records
             </h5>
+
             {% if page_obj %}
-            <span class="badge bg-light text-dark border">{{ page_obj.paginator.count }} Records Found</span>
+            <span class="badge bg-light text-dark border">
+                {{ page_obj.paginator.count }} Records Found
+            </span>
             {% endif %}
+
         </div>
+
+
         <div class="card-body p-0">
+
             <div class="table-responsive">
+
                 <table class="table table-hover align-middle mb-0">
+
                     <thead class="table-light">
                         <tr>
                             <th class="ps-4">Arrival Date</th>
@@ -197,171 +329,296 @@
                             <th>Variety (Grade)</th>
                             <th class="text-end">Min Price</th>
                             <th class="text-end">Max Price</th>
-                            <th class="text-end pe-4 text-success fw-bold">Modal Price</th>
+                            <th class="text-end pe-4 text-success fw-bold">
+                                Modal Price
+                            </th>
                         </tr>
                     </thead>
+
+
                     <tbody>
+
                         {% for item in page_obj %}
+
                         <tr>
-                            <td class="ps-4 text-muted">{{ item.arrival_date|date:"d M Y" }}</td>
-                            <td>{{ item.district }}</td>
-                            <td class="fw-semibold text-dark">{{ item.market }}</td>
-                            <td><span class="badge bg-primary bg-opacity-10 text-primary">{{ item.commodity }}</span></td>
-                            <td class="small text-muted">{{ item.variety }} ({{ item.grade }})</td>
-                            <td class="text-end">{% if item.min_price %}₹{{ item.min_price }}{% else %}-{% endif %}</td>
-                            <td class="text-end">{% if item.max_price %}₹{{ item.max_price }}{% else %}-{% endif %}</td>
-                            <td class="text-end pe-4 text-success fw-bold">
-                                {% if item.modal_price %}
-                                ₹{{ item.modal_price }}
-                                <small class="text-muted d-block" style="font-size:0.7rem;">/ Quintal</small>
+
+                            <td class="ps-4 text-muted">
+                                {% if item.arrival_date %}
+                                    {{ item.arrival_date|date:"d M Y" }}
                                 {% else %}
-                                -
+                                    -
                                 {% endif %}
                             </td>
+
+                            <td>
+                                {{ item.district }}
+                            </td>
+
+                            <td class="fw-semibold text-dark">
+                                {{ item.market }}
+                            </td>
+
+                            <td>
+                                <span class="badge bg-primary bg-opacity-10 text-primary">
+                                    {{ item.commodity }}
+                                </span>
+                            </td>
+
+                            <td class="small text-muted">
+                                {{ item.variety }}
+                                {% if item.grade %}
+                                    ({{ item.grade }})
+                                {% endif %}
+                            </td>
+
+                            <td class="text-end">
+                                {% if item.min_price %}
+                                    ₹{{ item.min_price }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+
+                            <td class="text-end">
+                                {% if item.max_price %}
+                                    ₹{{ item.max_price }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+
+                            <td class="text-end pe-4 text-success fw-bold">
+
+                                {% if item.modal_price %}
+                                    ₹{{ item.modal_price }}
+                                    <small class="text-muted d-block" style="font-size:0.7rem;">
+                                        / Quintal
+                                    </small>
+                                {% else %}
+                                    -
+                                {% endif %}
+
+                            </td>
+
                         </tr>
+
                         {% empty %}
+
                         <tr>
                             <td colspan="8" class="text-center py-5 text-muted">
+
                                 <i class="fa-solid fa-magnifying-glass fs-3 mb-3 text-light"></i>
+
                                 <h5>No records found</h5>
-                                <p>Try adjusting your search filters.</p>
+
+                                <p class="mb-0">
+                                    Try adjusting your search filters.
+                                </p>
+
                             </td>
                         </tr>
+
                         {% endfor %}
+
                     </tbody>
+
                 </table>
+
             </div>
         </div>
-        
+
+
         <!-- Pagination -->
-        {% if page_obj.has_other_pages %}
+        {% if page_obj and page_obj.has_other_pages %}
+
         <div class="card-footer bg-white border-top py-3">
+
             <nav aria-label="Page navigation">
+
                 <ul class="pagination justify-content-center mb-0">
+
                     {% if page_obj.has_previous %}
+
                     <li class="page-item">
-                        <a class="page-link text-success" href="?page={{ page_obj.previous_page_number }}{% if selected_commodity %}&commodity={{ selected_commodity }}{% endif %}{% if selected_market %}&market={{ selected_market }}{% endif %}">
-                            <i class="fa-solid fa-angle-left"></i> Previous
+                        <a
+                            class="page-link text-success"
+                            href="?page={{ page_obj.previous_page_number }}{% if selected_state %}&state={{ selected_state|urlencode }}{% endif %}{% if selected_commodity %}&commodity={{ selected_commodity|urlencode }}{% endif %}{% if selected_market %}&market={{ selected_market|urlencode }}{% endif %}"
+                        >
+                            <i class="fa-solid fa-angle-left"></i>
+                            Previous
                         </a>
                     </li>
+
                     {% else %}
+
                     <li class="page-item disabled">
-                        <span class="page-link"><i class="fa-solid fa-angle-left"></i> Previous</span>
-                    </li>
-                    {% endif %}
-                    
-                    <li class="page-item active">
-                        <span class="page-link bg-success border-success">
-                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                        <span class="page-link">
+                            <i class="fa-solid fa-angle-left"></i>
+                            Previous
                         </span>
                     </li>
 
+                    {% endif %}
+
+
+                    <li class="page-item active">
+                        <span class="page-link bg-success border-success">
+                            Page {{ page_obj.number }}
+                            of {{ page_obj.paginator.num_pages }}
+                        </span>
+                    </li>
+
+
                     {% if page_obj.has_next %}
+
                     <li class="page-item">
-                        <a class="page-link text-success" href="?page={{ page_obj.next_page_number }}{% if selected_commodity %}&commodity={{ selected_commodity }}{% endif %}{% if selected_market %}&market={{ selected_market }}{% endif %}">
-                            Next <i class="fa-solid fa-angle-right"></i>
+                        <a
+                            class="page-link text-success"
+                            href="?page={{ page_obj.next_page_number }}{% if selected_state %}&state={{ selected_state|urlencode }}{% endif %}{% if selected_commodity %}&commodity={{ selected_commodity|urlencode }}{% endif %}{% if selected_market %}&market={{ selected_market|urlencode }}{% endif %}"
+                        >
+                            Next
+                            <i class="fa-solid fa-angle-right"></i>
                         </a>
                     </li>
+
                     {% else %}
+
                     <li class="page-item disabled">
-                        <span class="page-link">Next <i class="fa-solid fa-angle-right"></i></span>
+                        <span class="page-link">
+                            Next
+                            <i class="fa-solid fa-angle-right"></i>
+                        </span>
                     </li>
+
                     {% endif %}
+
                 </ul>
+
             </nav>
+
         </div>
+
         {% endif %}
+
     </div>
 
 </div>
 
-<!-- Chart.js Script -->
-{% if chart_data %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const chartData = {{ chart_data|safe }};
-        if(!chartData) return;
 
-        const ctx = document.getElementById('mandiPriceChart').getContext('2d');
-        
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: chartData.labels,
-                datasets: [
-                    {
-                        label: 'Modal Price (₹/Qtl)',
-                        data: chartData.modal_prices,
-                        backgroundColor: 'rgba(25, 135, 84, 0.7)', // Success color
-                        borderColor: 'rgba(25, 135, 84, 1)',
-                        borderWidth: 1,
-                        borderRadius: 4
-                    },
-                    {
-                        label: 'Min Price (₹/Qtl)',
-                        data: chartData.min_prices,
-                        backgroundColor: 'rgba(220, 53, 69, 0.4)', // Danger color
-                        borderColor: 'rgba(220, 53, 69, 1)',
-                        borderWidth: 1,
-                        type: 'line',
-                        borderDash: [5, 5],
-                        pointRadius: 4
-                    },
-                    {
-                        label: 'Max Price (₹/Qtl)',
-                        data: chartData.max_prices,
-                        backgroundColor: 'rgba(13, 110, 253, 0.4)', // Primary color
-                        borderColor: 'rgba(13, 110, 253, 1)',
-                        borderWidth: 1,
-                        type: 'line',
-                        borderDash: [5, 5],
-                        pointRadius: 4
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    tooltip: {
-                        mode: 'index',
-                        intersect: false,
-                        callbacks: {
-                            label: function(context) {
-                                let label = context.dataset.label || '';
-                                if (label) {
-                                    label += ': ';
-                                }
-                                if (context.parsed.y !== null) {
-                                    label += '₹' + context.parsed.y;
-                                }
-                                return label;
-                            }
-                        }
-                    }
+{% if chart_data %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const chartData = {{ chart_data|safe }};
+
+    if (!chartData) {
+        return;
+    }
+
+    const canvas = document.getElementById("mandiPriceChart");
+
+    if (!canvas) {
+        return;
+    }
+
+    const ctx = canvas.getContext("2d");
+
+    new Chart(ctx, {
+        type: "bar",
+
+        data: {
+            labels: chartData.labels || [],
+
+            datasets: [
+                {
+                    label: "Modal Price (₹/Qtl)",
+                    data: chartData.modal_prices || [],
+                    backgroundColor: "rgba(25, 135, 84, 0.7)",
+                    borderColor: "rgba(25, 135, 84, 1)",
+                    borderWidth: 1,
+                    borderRadius: 4
                 },
-                scales: {
-                    y: {
-                        beginAtZero: false,
-                        title: {
-                            display: true,
-                            text: 'Price (₹/Quintal)'
-                        }
-                    },
-                    x: {
-                        ticks: {
-                            maxRotation: 45,
-                            minRotation: 45
+                {
+                    label: "Min Price (₹/Qtl)",
+                    data: chartData.min_prices || [],
+                    backgroundColor: "rgba(220, 53, 69, 0.4)",
+                    borderColor: "rgba(220, 53, 69, 1)",
+                    borderWidth: 1,
+                    type: "line",
+                    borderDash: [5, 5],
+                    pointRadius: 4
+                },
+                {
+                    label: "Max Price (₹/Qtl)",
+                    data: chartData.max_prices || [],
+                    backgroundColor: "rgba(13, 110, 253, 0.4)",
+                    borderColor: "rgba(13, 110, 253, 1)",
+                    borderWidth: 1,
+                    type: "line",
+                    borderDash: [5, 5],
+                    pointRadius: 4
+                }
+            ]
+        },
+
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+
+            plugins: {
+                legend: {
+                    position: "top"
+                },
+
+                tooltip: {
+                    mode: "index",
+                    intersect: false,
+
+                    callbacks: {
+                        label: function (context) {
+
+                            let label = context.dataset.label || "";
+
+                            if (label) {
+                                label += ": ";
+                            }
+
+                            if (context.parsed.y !== null) {
+                                label += "₹" + context.parsed.y;
+                            }
+
+                            return label;
                         }
                     }
                 }
+            },
+
+            scales: {
+                y: {
+                    beginAtZero: false,
+
+                    title: {
+                        display: true,
+                        text: "Price (₹/Quintal)"
+                    }
+                },
+
+                x: {
+                    ticks: {
+                        maxRotation: 45,
+                        minRotation: 45
+                    }
+                }
             }
-        });
+        }
     });
+
+});
 </script>
+
 {% endif %}
+
 {% endblock %}

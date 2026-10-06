@@ -16,6 +16,11 @@ ALLOWED_HOSTS = [
     ".vercel.app",
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://farmer-support-agriculture-portal.vercel.app",
+    "https://*.vercel.app",
+]
+
 DATA_GOV_API_KEY = os.environ.get("DATA_GOV_API_KEY", "")
 
 DATA_GOV_MANDI_RESOURCE_ID = os.environ.get(
