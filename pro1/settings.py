@@ -65,7 +65,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "pro1.wsgi.application"
 
 SECRET_KEY = "django-insecure-farmer-support-project"
-DEBUG = False
+# DEBUG = False
 
 ALLOWED_HOSTS = [
     "localhost",
