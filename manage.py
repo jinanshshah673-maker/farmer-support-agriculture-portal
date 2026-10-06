@@ -15,3 +15,6 @@ if __name__ == "__main__":
 
 # cd C:\Users\admin\OneDrive\Desktop\p\djangodemo1\pro1
 # python manage.py runserver
+# git add .
+# git commit -m "Update project"
+# git push

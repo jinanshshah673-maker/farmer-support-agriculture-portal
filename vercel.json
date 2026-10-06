@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "pro1/wsgi.py",
+      "use": "@vercel/python",
+      "config": { "maxLambdaSize": "15mb", "runtime": "python3.9" }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "pro1/wsgi.py"
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron/check-notifications/",
+      "schedule": "0 * * * *"
+    }
+  ]
+}

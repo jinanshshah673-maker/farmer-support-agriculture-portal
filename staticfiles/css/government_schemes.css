@@ -1,0 +1,55 @@
+/* ==========================================================================
+   Government Schemes Card Styles (Scoped)
+   ========================================================================== */
+
+.page-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--primary-dark, #1b5e20);
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.scheme-card {
+    background: #ffffff;
+    border: 1px solid #e0e7e0;
+    border-radius: 16px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.scheme-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 28px rgba(46, 125, 50, 0.16);
+}
+
+.scheme-card .card-body {
+    padding: 20px;
+}
+
+.scheme-card h5.scheme-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #1b5e20;
+    min-height: 52px;
+    line-height: 1.35;
+}
+
+.scheme-card p {
+    color: #555555;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.scheme-badge-central {
+    background-color: #1b5e20;
+    color: #ffffff;
+}
+
+.scheme-badge-gujarat {
+    background-color: #f57f17;
+    color: #ffffff;
+}

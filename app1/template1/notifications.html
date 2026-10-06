@@ -79,6 +79,18 @@
                    class="badge {% if filter_type == 'weather_alert' %}bg-success{% else %}bg-light text-dark border{% endif %} text-decoration-none py-1 px-2">
                     🌦️ Weather Alert
                 </a>
+                <a href="?type=government_scheme{% if filter_status %}&status={{ filter_status }}{% endif %}"
+                   class="badge {% if filter_type == 'government_scheme' %}bg-success{% else %}bg-light text-dark border{% endif %} text-decoration-none py-1 px-2">
+                    🏛️ Scheme
+                </a>
+                <a href="?type=market_price{% if filter_status %}&status={{ filter_status }}{% endif %}"
+                   class="badge {% if filter_type == 'market_price' %}bg-success{% else %}bg-light text-dark border{% endif %} text-decoration-none py-1 px-2">
+                    📈 Market
+                </a>
+                <a href="?type=crop_advisory{% if filter_status %}&status={{ filter_status }}{% endif %}"
+                   class="badge {% if filter_type == 'crop_advisory' %}bg-success{% else %}bg-light text-dark border{% endif %} text-decoration-none py-1 px-2">
+                    🌱 Advisory
+                </a>
             </div>
         </div>
     </div>
@@ -111,9 +123,21 @@
                                 <div class="bg-danger text-white p-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
                                     <i class="fa-solid fa-cloud-bolt fs-5"></i>
                                 </div>
-                            {% else %}
+                            {% elif notif.notification_type == 'government_scheme' %}
                                 <div class="bg-info text-white p-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
-                                    <i class="fa-solid fa-shield-halved fs-5"></i>
+                                    <i class="fa-solid fa-building-columns fs-5"></i>
+                                </div>
+                            {% elif notif.notification_type == 'market_price' %}
+                                <div class="bg-primary text-white p-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                    <i class="fa-solid fa-chart-line fs-5"></i>
+                                </div>
+                            {% elif notif.notification_type == 'crop_advisory' %}
+                                <div class="bg-success text-white p-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                    <i class="fa-solid fa-leaf fs-5"></i>
+                                </div>
+                            {% else %}
+                                <div class="bg-secondary text-white p-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                    <i class="fa-solid fa-bell fs-5"></i>
                                 </div>
                             {% endif %}
                         </div>

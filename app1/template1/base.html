@@ -84,8 +84,20 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {% if request.resolver_match.url_name == 'notifications' %}active{% endif %}" href="{% url 'notifications' %}">
-                        <i class="fa-solid fa-bell me-1"></i> Notifications
+                        <i class="fa-solid fa-bell me-1"></i> Notifications 
+                        {% if unread_notifications_count > 0 %}
+                        <span class="badge bg-danger rounded-pill">{{ unread_notifications_count }}</span>
+                        {% endif %}
                     </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="langDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-globe me-1"></i> Language
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="langDropdown">
+                        <li><a class="dropdown-item" href="#" onclick="changeLanguage('en'); return false;">English</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="changeLanguage('gu'); return false;">ગુજરાતી</a></li>
+                    </ul>
                 </li>
             </ul>
 
@@ -205,6 +217,37 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 {% block extra_js %}{% endblock %}
+
+<!-- Google Translate Element -->
+<div id="google_translate_element" style="display: none;"></div>
+
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'en,gu',
+            autoDisplay: false
+        }, 'google_translate_element');
+    }
+
+    function changeLanguage(langCode) {
+        var selectField = document.querySelector("#google_translate_element select");
+        if(selectField) {
+            selectField.value = langCode;
+            selectField.dispatchEvent(new Event('change'));
+        }
+    }
+</script>
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<!-- Hide Google Translate toolbar & Fix Body Top -->
+<style>
+    .goog-te-banner-frame.skiptranslate { display: none !important; }
+    body { top: 0px !important; }
+    #goog-gt-tt { display: none !important; }
+    .goog-te-combo { display: none !important; }
+    VIpgJd-Zvi9od-ORHb-OEVmcd { display: none !important; }
+</style>
 
 </body>
 </html>

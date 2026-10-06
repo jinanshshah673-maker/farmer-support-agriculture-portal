@@ -1,0 +1,132 @@
+html,
+body{
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background-image:url("/static/images/register_bg.png");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+}
+
+.container-fluid{
+    width:100%;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:rgba(0,0,0,.35);
+}
+
+.row{
+    width:100%;
+    height:100%;
+}
+
+.register-card{
+
+    width:540px;
+
+    background:rgba(255,255,255,.95);
+
+    border-radius:20px;
+
+    padding:30px;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.30);
+
+}
+
+.register-card img{
+
+    width:90px;
+
+    display:block;
+
+    margin:auto;
+
+}
+
+.register-card h2{
+
+    text-align:center;
+
+    color:#2e7d32;
+
+    font-weight:bold;
+
+}
+
+.register-card p{
+
+    text-align:center;
+
+    color:#666;
+
+    margin-bottom:25px;
+
+}
+
+.form-label{
+
+    font-weight:600;
+
+}
+
+.form-control{
+
+    width:100%;
+
+    height:46px;
+
+    border-radius:10px;
+
+}
+
+.btn-success{
+
+    height:48px;
+
+    font-size:18px;
+
+    border-radius:10px;
+
+}
+
+.btn-success:hover{
+
+    background:#1b5e20;
+
+}
+
+.text-center{
+
+    text-align:center;
+
+}
+
+a{
+
+    text-decoration:none;
+
+    font-weight:600;
+
+}
+
+@media(max-width:768px){
+
+.register-card{
+
+    width:95%;
+
+    padding:20px;
+
+}
+
+}

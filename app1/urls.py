@@ -25,4 +25,7 @@ urlpatterns = [
     # Dynamic Location AJAX Endpoints
     path('ajax/load-districts/', views.load_districts, name='ajax_load_districts'),
     path('ajax/load-talukas/', views.load_talukas, name='ajax_load_talukas'),
+    
+    # Cron Jobs
+    path('api/cron/check-notifications/', views.check_notifications_cron, name='check_notifications_cron'),
 ]

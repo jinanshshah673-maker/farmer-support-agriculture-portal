@@ -9,6 +9,8 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 import json
 from django.db.models import Q
+import os
+from django.core.management import call_command
 
 from .forms import FarmerRegistrationForm, FarmingReminderForm
 from .models import (
@@ -521,3 +523,24 @@ def load_talukas(request):
 
     data = list(talukas.values("id", "name"))
     return JsonResponse(data, safe=False)
+
+# ------------------------------------------------------------------------------
+# CRON JOB ENDPOINT FOR VERCEL
+# ------------------------------------------------------------------------------
+
+def check_notifications_cron(request):
+    """
+    Secure endpoint to be triggered by Vercel Cron to generate notifications.
+    """
+    auth_header = request.headers.get("Authorization")
+    cron_secret = os.environ.get("CRON_SECRET", "dev-secret")
+    
+    # Check either Authorization header or GET parameter for secret
+    if auth_header != f"Bearer {cron_secret}" and request.GET.get("secret") != cron_secret:
+        return JsonResponse({"error": "Unauthorized"}, status=401)
+        
+    try:
+        call_command("check_notifications")
+        return JsonResponse({"status": "success", "message": "Notifications generated"})
+    except Exception as e:
+        return JsonResponse({"status": "error", "message": str(e)}, status=500)

@@ -189,6 +189,10 @@ class Notification(models.Model):
         ("crop_care", "General Crop Care"),
         ("harvesting", "Harvesting Reminder"),
         ("weather_alert", "Weather Alert"),
+        ("government_scheme", "Government Scheme"),
+        ("market_price", "Market Price"),
+        ("crop_advisory", "Crop Advisory"),
+        ("system", "System"),
     ]
 
     farmer = models.ForeignKey(
@@ -214,6 +218,8 @@ class Notification(models.Model):
     is_read = models.BooleanField(
         default=False
     )
+    
+    reference_id = models.CharField(max_length=255, blank=True, null=True, db_index=True)
 
     class Meta:
         ordering = ["-created_at"]
