@@ -3,16 +3,17 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DATA_GOV_API_KEY = os.environ.get("DATA_GOV_API_KEY", "579b464db66ec23bdd000001cdc3b564546246a772a26393094f5645")
+DATA_GOV_API_KEY = os.environ.get(
+    "DATA_GOV_API_KEY",
+    "579b464db66ec23bdd000001cdc3b564546246a772a26393094f5645"
+)
+
 DATA_GOV_MANDI_RESOURCE_ID = os.environ.get(
     "DATA_GOV_MANDI_RESOURCE_ID",
     "9ef84268-d588-465a-a308-a864a43d0070"
 )
 
-SECRET_KEY = os.environ.get(
-    "DJANGO_SECRET_KEY",
-    "django-insecure-development-key"
-)
+SECRET_KEY = "django-insecure-farmer-support-project"
 
 DEBUG = True
 
@@ -64,14 +65,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "pro1.wsgi.application"
 
-SECRET_KEY = "django-insecure-farmer-support-project"
-# DEBUG = False
-
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-    ".vercel.app",
-]
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -89,8 +88,11 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGE_CODE = "en-us"
+
 TIME_ZONE = "UTC"
+
 USE_I18N = True
+
 USE_TZ = True
 
 STATIC_URL = "/static/"
