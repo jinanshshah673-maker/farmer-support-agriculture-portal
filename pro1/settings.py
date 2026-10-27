@@ -8,7 +8,8 @@ SECRET_KEY = os.environ.get(
     "django-insecure-farmer-support-project"
 )
 
-DEBUG = True
+# Use DEBUG=True locally (default). Vercel sets DJANGO_DEBUG=False for production.
+DEBUG = os.environ.get("DJANGO_DEBUG", "True").lower() in ("true", "1", "yes")
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -16,17 +17,42 @@ ALLOWED_HOSTS = [
     ".vercel.app",
 ]
 
+# ---------------------------------------------------------------------------
+# CSRF & Security – Required for Vercel HTTPS proxy
+# ---------------------------------------------------------------------------
 CSRF_TRUSTED_ORIGINS = [
     "https://farmer-support-agriculture-portal.vercel.app",
+    "https://*.vercel.app",
 ]
 
-SECURE_PROXY_SSL_HEADER = (
-    "HTTP_X_FORWARDED_PROTO",
-    "https",
-)
+# Tell Django the real protocol is HTTPS (Vercel terminates TLS and forwards
+# X-Forwarded-Proto: https to the backend)
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+# Trust the Host header forwarded by Vercel's reverse proxy so that
+# Django's CSRF referer-check uses the correct origin.
+USE_X_FORWARDED_HOST = True
+
+# Cookies must be sent only over HTTPS (production only – disable locally so HTTP works)
+CSRF_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_SECURE = not DEBUG
+
+# SameSite=Lax: cookie is included in top-level form POSTs from same origin.
+CSRF_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_SAMESITE = "Lax"
+
+# Keep CSRF cookie readable by JS (needed if any fetch() POST is ever added)
+CSRF_COOKIE_HTTPONLY = False
+
+# Explicit cookie name (default, but stated for clarity/debuggability)
+CSRF_COOKIE_NAME = "csrftoken"
+
+# ---------------------------------------------------------------------------
+# Authentication redirects
+# ---------------------------------------------------------------------------
+LOGIN_URL = "/login/"
+LOGIN_REDIRECT_URL = "/dashboard/"
+LOGOUT_REDIRECT_URL = "/"
 
 DATA_GOV_API_KEY = os.environ.get(
     "DATA_GOV_API_KEY",
@@ -131,4 +157,8 @@ STORAGES = {
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# ---------------------------------------------------------------------------
+# Sessions – Use signed cookies so no DB/filesystem writes are needed on Vercel
+# (Vercel's filesystem is ephemeral/read-only between invocations)
+# ---------------------------------------------------------------------------
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"

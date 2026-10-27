@@ -12,6 +12,9 @@
       "dest": "pro1/wsgi.py"
     }
   ],
+  "env": {
+    "DJANGO_SETTINGS_MODULE": "pro1.settings"
+  },
   "crons": [
     {
       "path": "/api/cron/check-notifications/",
