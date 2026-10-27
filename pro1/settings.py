@@ -108,12 +108,44 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "pro1.wsgi.application"
 
+import shutil
+
+# ---------------------------------------------------------------------------
+# DATABASE – Vercel read-only filesystem workaround
+# ---------------------------------------------------------------------------
+# Vercel deploys files to /var/task/ (read-only). SQLite writes (e.g., auth
+# last_login, session data, new registrations) would crash with:
+#   OperationalError: attempt to write a readonly database
+#
+# Fix: on Vercel we point Django at /tmp/db.sqlite3 (always writable).
+#       wsgi.py copies the committed snapshot there before the app starts.
+# ---------------------------------------------------------------------------
+
+_COMMITTED_DB = BASE_DIR / "db.sqlite3"          # read-only on Vercel
+_VERCEL_DB    = "/tmp/db.sqlite3"                 # writable on Vercel
+
+# Detect Vercel: its runtime sets the VERCEL env var.
+_ON_VERCEL = bool(os.environ.get("VERCEL") or os.environ.get("VERCEL_ENV"))
+
+if _ON_VERCEL:
+    # Copy the committed snapshot to /tmp/ if not already there.
+    # (We copy every time so a fresh deployment always starts with the
+    #  latest data that was committed to git.)
+    try:
+        shutil.copy2(str(_COMMITTED_DB), _VERCEL_DB)
+    except Exception:
+        pass  # If copy fails, Django will create a fresh DB at that path
+    _DB_PATH = _VERCEL_DB
+else:
+    _DB_PATH = str(_COMMITTED_DB)
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": _DB_PATH,
     }
 }
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
