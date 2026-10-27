@@ -661,12 +661,77 @@ def fetch_and_update_gujarat_mandi_prices(state="Gujarat", limit=1000):
     }
 
 
+def load_mandi_prices_from_json():
+    """
+    Seeds the MandiPrice table from the local JSON backup file.
+    Called automatically when the DB is empty (e.g. fresh Vercel deployment).
+    Returns the number of records inserted.
+    """
+    backup_file = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "app1", "data", "gujarat_mandi_prices.json"
+    )
+    if not os.path.exists(backup_file):
+        return 0
+
+    try:
+        with open(backup_file, "r", encoding="utf-8") as f:
+            records = json.load(f)
+    except Exception:
+        return 0
+
+    inserted = 0
+    for rec in records:
+        rec_state     = (rec.get("state") or "Gujarat").strip()
+        rec_district  = (rec.get("district") or "Other").strip()
+        rec_market    = (rec.get("market") or "Unknown Mandi").strip()
+        rec_commodity = (rec.get("commodity") or "").strip()
+        rec_variety   = (rec.get("variety") or "Other").strip()
+        rec_grade     = (rec.get("grade") or "FAQ").strip()
+
+        arr_date = parse_mandi_date(rec.get("arrival_date"))
+        if not arr_date or not rec_commodity:
+            continue
+
+        min_p   = parse_mandi_price(rec.get("min_price"))
+        max_p   = parse_mandi_price(rec.get("max_price"))
+        modal_p = parse_mandi_price(rec.get("modal_price"))
+
+        _, created = MandiPrice.objects.update_or_create(
+            state=rec_state,
+            district=rec_district,
+            market=rec_market,
+            commodity=rec_commodity,
+            variety=rec_variety,
+            arrival_date=arr_date,
+            defaults={
+                "grade": rec_grade,
+                "min_price": min_p,
+                "max_price": max_p,
+                "modal_price": modal_p,
+                "unit": "₹/Quintal",
+                "source": "data.gov.in / Agmarknet (JSON backup)",
+            },
+        )
+        if created:
+            inserted += 1
+
+    return inserted
+
+
 def get_gujarat_mandi_summary():
     """
     Returns summary analytics for the Gujarat mandi prices in database.
+    Auto-seeds from the local JSON backup if the DB is empty (Vercel cold start).
     """
     qs = MandiPrice.objects.filter(state__iexact="Gujarat")
     total_records = qs.count()
+
+    # DB is empty – seed from the committed JSON backup file
+    if total_records == 0:
+        load_mandi_prices_from_json()
+        qs = MandiPrice.objects.filter(state__iexact="Gujarat")
+        total_records = qs.count()
 
     if total_records == 0:
         return {

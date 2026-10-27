@@ -370,6 +370,11 @@ def market_price(request):
     selected_commodity = request.GET.get("commodity", "")
     selected_market = request.GET.get("market", "")
 
+    # Seed DB from JSON backup on Vercel cold-start (empty DB)
+    from app1.services import load_mandi_prices_from_json
+    if MandiPrice.objects.filter(state__iexact="Gujarat").count() == 0:
+        load_mandi_prices_from_json()
+
     # Get distinct commodities from the database
     commodities = MandiPrice.objects.filter(state__iexact="Gujarat").values_list("commodity", flat=True).distinct().order_by("commodity")
 
